@@ -20,5 +20,4 @@ test("#tripsToGeojson", async function (t: any) {
   console.log(JSON.stringify(tripsGeojson));
 
   expect(1).toEqual(1);
-  t.end();
 });
