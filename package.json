@@ -3,7 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "test": "tap --coverage test/*.test.js"
+    "test": "bun test"
   },
   "devDependencies": {
     "bun-types": "latest",
