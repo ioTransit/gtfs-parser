@@ -2,6 +2,9 @@
   "name": "gtfs2geojson-ts",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "test": "tap --coverage test/*.test.js"
+  },
   "devDependencies": {
     "bun-types": "latest",
     "gtfs-types": "^3.0.0"
@@ -10,9 +13,13 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@types/adm-zip": "^0.5.4",
     "@types/geojson": "^7946.0.13",
+    "adm-zip": "^0.5.10",
+    "axios": "^1.6.2",
     "csv-parse": "^5.5.2",
     "csvtojson": "^2.0.10",
+    "request": "^2.88.2",
     "zod": "^3.22.4"
   }
 }

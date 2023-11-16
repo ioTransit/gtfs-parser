@@ -1,12 +1,42 @@
+import axios from "axios";
+import AdmZip from "adm-zip";
 import csvtojson from "csvtojson";
 import { type FeatureCollection, MultiLineString } from "geojson";
 import type { Route, Shapes, Stop } from "gtfs-types";
 import { z } from "zod";
 
-export class Gtfs2Geojson {
-  constructor() {}
+export class Gtfs {
+  location: string;
+  zipEntries: null | AdmZip.IZipEntry[];
+  zip: any;
 
-  colParser = {
+  constructor(location: string) {
+    this.location = location;
+    this.zipEntries = null;
+    this.zip = null;
+  }
+
+  public async init() {
+    const { zip, zipEntries } = await this.getZip(this.location);
+    this.zip = zip;
+    this.zipEntries = zipEntries;
+  }
+
+  private async getZip(url: string) {
+    return await axios
+      .get(url, {
+        responseType: "arraybuffer",
+      })
+      .then((body) => {
+        const zip = new AdmZip(body.data);
+        const zipEntries = zip.getEntries();
+        if (!zipEntries || !zipEntries.length || zipEntries.length === 0)
+          throw new Error("No zip entries found");
+        return { zip, zipEntries };
+      });
+  }
+
+  private colParser = {
     id: "string",
     service_id: "string",
     route_id: "string",
@@ -41,26 +71,41 @@ export class Gtfs2Geojson {
     bikes_allowed: "string",
   };
 
-  async parser(fileName: string) {
-    return await csvtojson({
-      colParser: this.colParser,
-      checkType: true,
-      ignoreEmpty: true,
-    })
-      .fromFile(fileName)
-      .then((json) => {
-        const newArr: any = [];
-        for (const item of json) {
-          newArr.push(item);
-        }
-
-        return z.array(z.any()).parse(newArr);
-      });
+  private getFile(fileName: string) {
+    if (!this.zipEntries)
+      throw new Error("Gtfs has not been initialized use 'gtfs.init()'");
+    const entry = this.zipEntries.find((zipEntry) => {
+      return zipEntry.entryName === fileName;
+    });
+    if (!entry) throw new Error(`File ${fileName} not found`);
+    return entry;
   }
 
-  async lines(shapesInput: string) {
+  public async fileParser(fileName: string) {
+    try {
+      const file = this.getFile(fileName);
+      return await csvtojson({
+        colParser: this.colParser,
+        checkType: true,
+        ignoreEmpty: true,
+      })
+        .fromString(this.zip.readAsText(file.entryName))
+        .then((json) => {
+          const newArr: any = [];
+          for (const item of json) {
+            newArr.push(item);
+          }
+          return z.array(z.any()).parse(newArr);
+        });
+    } catch (e) {
+      console.error(e);
+      throw new Error(`Issue with parser for ${fileName}`);
+    }
+  }
+
+  public async tripsToGeojson() {
     var shapes: { [k: string]: Shapes[] } = (
-      await this.parser(shapesInput)
+      await this.fileParser("shapes.txt")
     ).reduce((memo: { [k: string]: Shapes[] }, row: Shapes) => {
       memo[row.shape_id] = (memo[row.shape_id] || []).concat(row);
       return memo;
@@ -89,10 +134,10 @@ export class Gtfs2Geojson {
     };
   }
 
-  async route(shapesInput: string, routesInput: string, tripsInput: string) {
-    const tripFeatureCollection = await this.lines(shapesInput);
-    const routes = await this.parser(routesInput);
-    const trips = await this.parser(tripsInput);
+  public async routesToGeojson() {
+    const tripFeatureCollection = await this.tripsToGeojson();
+    const routes = await this.fileParser("routes.txt");
+    const trips = await this.fileParser("trips.txt");
 
     const routeFeaturesCollection: FeatureCollection<MultiLineString, Route> = {
       type: "FeatureCollection",
@@ -122,8 +167,8 @@ export class Gtfs2Geojson {
     return routeFeaturesCollection;
   }
 
-  async stops(stopsInput: string) {
-    var stops: Stop[] = await this.parser(stopsInput);
+  public async stopsToGeojson() {
+    var stops: Stop[] = await this.fileParser("stops.txt");
     return {
       type: "FeatureCollection",
       features: stops.map(function (stop) {
