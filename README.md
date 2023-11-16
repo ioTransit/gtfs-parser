@@ -46,3 +46,8 @@ geometries and properties from the gtfs as geojson.
 
 Using the `gtfs.routesToGeojson()` will build and return the
 routes geometries and properties from the gtfs as geojson.
+
+### stopsToGeojson
+
+Using `gtfs.stopsToGeojson()` will build and return the
+stops geometries and properties from the gtfs as geojson.
