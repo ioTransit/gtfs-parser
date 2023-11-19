@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "baseUrl": "./",
     "lib": ["ESNext"],
     "module": "esnext",
     "target": "esnext",
@@ -15,8 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "types": [
-      "bun-types" // add Bun global
-    ]
-  }
+    "types": ["bun-types"]
+  },
+  "include": ["**/*.ts", "..index.ts"]
 }

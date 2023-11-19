@@ -10,9 +10,11 @@ test("#routesToGeojson", async function (t: any) {
 
   const routesGeojson = await gtfs.routesToGeojson();
   expect(1).toEqual(1);
+  console.log("after expect");
 });
 
 test("#tripsToGeojson", async function (t: any) {
+  console.log("start of next");
   const gtfs = new Gtfs(url);
   await gtfs.init();
 

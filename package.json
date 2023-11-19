@@ -1,10 +1,19 @@
 {
   "name": "gtfs-parser",
-  "module": "index.ts",
   "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "bun test"
+    "test": "bun test",
+    "build": "bun build --target=node ./src/index.ts --outfile=dist/index.js && bun run build:declaration",
+    "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
+    "postbuild": "rimraf tsconfig.types.tsbuildinfo"
   },
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
   "devDependencies": {
     "bun-types": "latest",
     "gtfs-types": "^3.0.0"
@@ -12,6 +21,8 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "author": "Walter Jenkins",
+  "license": "MIT",
   "dependencies": {
     "@types/adm-zip": "^0.5.4",
     "@types/geojson": "^7946.0.13",
@@ -21,5 +32,23 @@
     "csvtojson": "^2.0.10",
     "request": "^2.88.2",
     "zod": "^3.22.4"
-  }
+  },
+  "description": "The GTFS-PARSER library is supposed to be a simple way to parse GTFS zip files from urls. It should be able to handle reading zip files without taking up space on your harddrive and convert the text files to json array's based on the GTFS specification. It takes the liberty of converting non-string fields over to integers, but by default the csvtojson library used under the hood will convert everything to strings.",
+  "version": "1.0.0",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AvidDabbler/gtfs-parser.git"
+  },
+  "keywords": [
+    "gtfs",
+    "public",
+    "transit"
+  ],
+  "bugs": {
+    "url": "https://github.com/AvidDabbler/gtfs-parser/issues"
+  },
+  "homepage": "https://github.com/AvidDabbler/gtfs-parser#readme"
 }
