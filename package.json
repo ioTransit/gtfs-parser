@@ -8,19 +8,19 @@
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "test": "bun test",
-    "build": "bun build --target=node ./src/index.ts --outfile=dist/index.js && bun run build:declaration",
+    "build": "tsup ./src/index.ts && npm run build:declaration && npm run postbuild",
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
     "postbuild": "rimraf tsconfig.types.tsbuildinfo"
   },
   "files": [
-    "dist/*.js",
+    "dist/*.cjs",
     "dist/*.d.ts"
   ],
   "devDependencies": {
