@@ -1,4 +1,5 @@
 {
+  "version": "0.0.0",
   "name": "gtfs-parser",
   "type": "module",
   "main": "dist/index.js",
@@ -34,7 +35,6 @@
     "zod": "^3.22.4"
   },
   "description": "The GTFS-PARSER library is supposed to be a simple way to parse GTFS zip files from urls. It should be able to handle reading zip files without taking up space on your harddrive and convert the text files to json array's based on the GTFS specification. It takes the liberty of converting non-string fields over to integers, but by default the csvtojson library used under the hood will convert everything to strings.",
-  "version": "1.0.0",
   "directories": {
     "test": "test"
   },
