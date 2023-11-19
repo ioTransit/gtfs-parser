@@ -18,7 +18,7 @@
     "build": "tsup ./src/index.ts"
   },
   "files": [
-    "dist/*.js",
+    "dist/*.cjs",
     "dist/*.d.ts"
   ],
   "devDependencies": {
