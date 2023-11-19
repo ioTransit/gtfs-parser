@@ -3,7 +3,7 @@
   "name": "gtfs-parser",
   "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
   "exports": {
