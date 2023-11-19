@@ -18,6 +18,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
+    "paths": {
+      "@/*": ["*"]
+    },
     "types": ["bun-types"]
   },
   "include": ["**/*.ts", "..index.ts"]
