@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "baseUrl": "./",
     "lib": ["ESNext"],
     "module": "esnext",
@@ -19,9 +19,9 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     },
     "types": ["bun-types"]
   },
-  "include": ["**/*.ts", "..index.ts"]
+  "include": ["src/**/*.ts"]
 }
