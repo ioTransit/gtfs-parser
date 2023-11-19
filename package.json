@@ -1,5 +1,5 @@
 {
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "gtfs-parser",
   "type": "module",
   "main": "dist/index.js",
@@ -7,9 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "bun test",
-    "build": "bun build --target=node ./src/index.ts --outfile=dist/index.js && bun run build:declaration",
-    "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
-    "postbuild": "rimraf tsconfig.types.tsbuildinfo"
+    "build": "tsup ./src/index.ts"
   },
   "files": [
     "dist/*.js",
