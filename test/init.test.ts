@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { Gtfs } from "..";
+import { Gtfs } from "index";
 
 const url =
   "https://raw.githubusercontent.com/AvidDabbler/gtfs-parser/main/test/pts_google_transit.zip";
